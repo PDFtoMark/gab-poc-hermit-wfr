@@ -1,0 +1,29 @@
+name: Index
+on:
+  push:
+    branches: [main]
+  workflow_run:
+    workflows: [Auto-version]
+    types: [completed]
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Context
+        run: |
+          echo "REF=$GITHUB_REF"
+          echo "SHA=$GITHUB_SHA"
+          echo "HEAD_SHA=${{ github.event.workflow_run.head_sha }}"
+          echo "HEAD_BRANCH=${{ github.event.workflow_run.head_branch }}"
+          echo "EVENT=${{ github.event_name }}"
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          fetch-depth: 0
+      - name: What was checked out
+        run: |
+          echo "rev=$(git rev-parse HEAD)"
+          echo "subject=$(git log -1 --format=%s)"
+          echo "---marker:"; cat marker.txt || true
+          ls -la
