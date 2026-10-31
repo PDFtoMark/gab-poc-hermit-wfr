@@ -1,0 +1,7 @@
+name: Auto-version
+on: pull_request
+jobs:
+  x:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "forged upstream Auto-version from PR head"
